@@ -23,7 +23,6 @@ public class ProxyServerControllerV2 {
     private String fileDir;
 
     private final String testUrl = "http://localhost:8080/test_rest_template_get";
-    private final RestTemplate restTemplate;
     // RestClient test
     private final RestClient restClient;
 
@@ -33,9 +32,10 @@ public class ProxyServerControllerV2 {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         log.info("===test1 V2 dialogue = {}===", dialogue);
-        log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
+
         body.add("dialogue", dialogue);
         if (file != null) {
+            log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
 
@@ -44,7 +44,7 @@ public class ProxyServerControllerV2 {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                .toEntity(String.class);
+                .toEntity(String.class); // ResponseEntity로 받기
 
         return entity;
 
