@@ -21,8 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProxyServerControllerV2 {
     @Value("${file.dir}")
     private String fileDir;
+    @Value("${flask.dir}")
+    private String testUrl;
 
-    private final String testUrl = "http://localhost:8080/test_rest_template_get";
     // RestClient test
     private final RestClient restClient;
 
