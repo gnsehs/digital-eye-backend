@@ -25,7 +25,6 @@ import java.io.IOException;
 public class ProxyServerController {
     @Value("${file.dir}")
     private String fileDir;
-
     private final String testUrl = "http://localhost:8080/test_rest_template_get";
     private final RestTemplate restTemplate;
 
@@ -79,8 +78,11 @@ public class ProxyServerController {
 
     }
 
-    /*
-    플라스크 서버 역할
+    /**
+     * 테스트용 플라스크 서버 역할
+     * @param dialogue
+     * @param file
+     * @return
      */
     @PostMapping("/test_rest_template_get")
     public String tempAiServer(@RequestPart(value = "dialogue") String dialogue,
