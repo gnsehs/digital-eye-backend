@@ -26,7 +26,7 @@ public class ProxyServerControllerV2 {
     // RestClient test
     private final RestClient restClient;
 
-    @PostMapping("/response-data")
+    @PostMapping(value = "/response-data", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> responseData(@RequestPart(value = "dialogue") String dialogue,
                                                @RequestPart(value = "image", required = false) MultipartFile file) {
 
