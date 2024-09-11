@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class DeepLController {
 
-    @Value("${deepL-admin-key}")
-    private String deeplKey;
+    private final Translator translator;
 
 
     @PostMapping("/deepl-test")
     public ResponseEntity<String> deeplTest(@RequestBody String dialogue) throws DeepLException, InterruptedException {
-        Translator translator = new Translator(deeplKey);
         TextResult textResult = translator.translateText(dialogue, "EN", "KO");
         return ResponseEntity.ok(textResult.getText());
     }
