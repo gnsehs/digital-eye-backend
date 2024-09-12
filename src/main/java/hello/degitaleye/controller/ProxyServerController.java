@@ -67,7 +67,7 @@ public class ProxyServerController {
         log.info("===test1 V2 dialogue = {}===", dialogue);
 
         try { // 번역처리
-            TextResult textResult = translator.translateText(dialogue, "EN", "KO");
+            TextResult textResult = translator.translateText(dialogue, "KO", "EN");
             body.add("dialogue_T", textResult.getText());
             log.info("===test1 V2 dialogueT = {}===", textResult.getText());
         } catch (DeepLException e) {
