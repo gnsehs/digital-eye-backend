@@ -67,7 +67,7 @@ public class ProxyServerController {
         log.info("===test1 V2 dialogue = {}===", dialogue);
 
         try { // 번역처리
-            TextResult textResult = translator.translateText(dialogue, "KO", "EN");
+            TextResult textResult = translator.translateText(dialogue, "KO", "en-US");
             body.add("dialogue_T", textResult.getText());
             log.info("===test1 V2 dialogueT = {}===", textResult.getText());
         } catch (DeepLException e) {
@@ -107,7 +107,7 @@ public class ProxyServerController {
                                @RequestPart(value = "image", required = false) MultipartFile file) {
         log.info("===test2 dialouge_T = {}===", dialogueT);
         saveFile(file);
-        return "good test2";
+        return dialogueT;
 
     }
 
