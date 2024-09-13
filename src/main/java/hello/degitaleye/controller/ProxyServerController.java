@@ -29,7 +29,7 @@ import java.io.IOException;
 public class ProxyServerController {
     @Value("${file.dir}")
     private String fileDir; // 파일 저장
-    private final String testUrl = "http://localhost:8080/test_rest_template_get"; // flask server url
+    private final String testUrl = "https://80cc-175-195-197-187.ngrok-free.app/send_check"; // flask server url
     // 번역
     private final Translator translator;
     // RestClient test
@@ -59,8 +59,14 @@ public class ProxyServerController {
 
     }
 
+    /**
+     *
+     * @param dialogue 사용자 요청 문장
+     * @param file AI 처리할 이미지
+     * @return TODO client return 생각하기
+     */
     @PostMapping(value = "/response-data", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> responseData(@RequestPart(value = "dialogue") String dialogue,
+    public ResponseEntity<String> responseData(@RequestPart(value = "text") String dialogue,
                                                @RequestPart(value = "image", required = false) MultipartFile file) {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -68,7 +74,7 @@ public class ProxyServerController {
 
         try { // 번역처리
             TextResult textResult = translator.translateText(dialogue, "KO", "en-US");
-            body.add("dialogue_T", textResult.getText());
+            body.add("text", textResult.getText());
             log.info("===test1 V2 dialogueT = {}===", textResult.getText());
         } catch (DeepLException e) {
             log.error("DeepL 오류", e);
@@ -102,7 +108,7 @@ public class ProxyServerController {
      * @param file
      * @return
      */
-    @PostMapping("/test_rest_template_get")
+    @PostMapping(value = "/test_rest_template_get", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String tempAiServer(@RequestPart(value = "dialogue_T") String dialogueT,
                                @RequestPart(value = "image", required = false) MultipartFile file) {
         log.info("===test2 dialouge_T = {}===", dialogueT);
