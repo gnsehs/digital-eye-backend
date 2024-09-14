@@ -1,21 +1,15 @@
 package hello.degitaleye.controller;
 
 import com.deepl.api.DeepLException;
-import com.deepl.api.TextResult;
-import com.deepl.api.Translator;
 import hello.degitaleye.dto.AiFormDataResponseDto;
 import hello.degitaleye.service.ProxyServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -27,7 +21,7 @@ public class ProxyServerController {
 
     /**
      * 단일 이미지 파일을 받는 컨트롤러
-     * @param file
+     * @param file android 에서 받는 이미지
      * @return
      */
     @PostMapping(value = "/ai-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -35,7 +29,6 @@ public class ProxyServerController {
             @RequestPart(value = "image") MultipartFile file) {
 
         String aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
-
         return ResponseEntity.ok().body(aiImageDataResponse);
 
     }
@@ -50,10 +43,7 @@ public class ProxyServerController {
     public ResponseEntity<AiFormDataResponseDto> aiForm(@RequestPart(value = "text") String text,
                                          @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-
         AiFormDataResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
-
-
         return ResponseEntity.ok().body(aiFormDataResponse);
 
     }

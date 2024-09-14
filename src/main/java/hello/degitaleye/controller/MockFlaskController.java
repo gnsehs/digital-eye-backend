@@ -24,7 +24,7 @@ public class MockFlaskController {
 
 
     /**
-     * 테스트용 플라스크 서버 역할
+     * 테스트용 플라스크 서버 역할 -> 나중에 삭제
      * @param dialogueT
      * @param file
      * @return

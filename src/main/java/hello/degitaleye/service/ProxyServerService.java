@@ -75,7 +75,7 @@ public class ProxyServerService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                .body(AiFormDataResponseDto.class);
+                .body(AiFormDataResponseDto.class); // 이때 response가 json임이 명시 되어야 함
 
     }
 
