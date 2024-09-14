@@ -3,6 +3,8 @@ package hello.degitaleye.controller;
 import com.deepl.api.DeepLException;
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
+import hello.degitaleye.dto.AiFormDataResponseDto;
+import hello.degitaleye.service.ProxyServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,16 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Slf4j
 public class ProxyServerController {
-    @Value("${file.dir}")
-    private String fileDir; // 파일 저장
-    @Value("${flask.base.url}")
-    private String flaskBaseUrl;
 
-    // 번역
-    private final Translator translator;
-    private final RestClient restClient;
-    //temp
-    private final String testFlaskUrl = "/test_rest_template_get";
+    private final ProxyServerService proxyServerService;
 
     /**
      * 단일 이미지 파일을 받는 컨트롤러
@@ -39,21 +33,10 @@ public class ProxyServerController {
     @PostMapping(value = "/ai-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> aiImage(
             @RequestPart(value = "image") MultipartFile file) {
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-        if (file != null) {
-            log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
-            body.add("image", file.getResource());
-        }
+        String aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
 
-        ResponseEntity<String> entity = restClient.post()
-                .uri(flaskBaseUrl + testFlaskUrl)
-                .body(body)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .retrieve()
-                .toEntity(String.class);
-
-        return entity;
+        return ResponseEntity.ok().body(aiImageDataResponse);
 
     }
 
@@ -64,36 +47,14 @@ public class ProxyServerController {
      * @return TODO client return 생각하기, @ExceptionHandler 작성하기
      */
     @PostMapping(value = "/ai-form", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> aiForm(@RequestPart(value = "text") String text,
-                                         @RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<AiFormDataResponseDto> aiForm(@RequestPart(value = "text") String text,
+                                         @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        log.info("===test1 V2 dialogue = {}===", text);
 
-        try { // 번역처리
-            TextResult textResult = translator.translateText(text, "KO", "en-US");
-            body.add("text", textResult.getText());
-            log.info("===test1 V2 dialogueT = {}===", textResult.getText());
-        } catch (DeepLException e) {
-            log.error("DeepL 오류", e);
-            return ResponseEntity.internalServerError().body("Sorry DeepL error");
-        } catch (InterruptedException e) {
-            return ResponseEntity.internalServerError().body("Sorry Server error");
-        }
+        AiFormDataResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
 
-        if (file != null) {
-            log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
-            body.add("image", file.getResource());
-        }
 
-        ResponseEntity<String> entity = restClient.post()
-                .uri(flaskBaseUrl + testFlaskUrl)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(body)
-                .retrieve()
-                .toEntity(String.class); // ResponseEntity로 받기
-
-        return entity;
+        return ResponseEntity.ok().body(aiFormDataResponse);
 
     }
 

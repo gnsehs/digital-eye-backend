@@ -1,5 +1,7 @@
 package hello.degitaleye.controller;
 
+import hello.degitaleye.dto.AiFormDataResponseDto;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +29,7 @@ public class MockFlaskController {
      * @param file
      * @return
      */
-    @PostMapping(value = "/test_rest_template_get", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/test_rest_template_get", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String tempAiServer(@RequestPart(value = "text", required = false) String dialogueT,
                                @RequestPart(value = "image") MultipartFile file) {
         log.info("===test2 dialouge_T = {}===", dialogueT);
@@ -36,7 +38,7 @@ public class MockFlaskController {
         if (dialogueT == null) {
             return "image test is good";
         } else {
-            return dialogueT;
+            return Json.pretty(new AiFormDataResponseDto(dialogueT, file.getOriginalFilename()));
         }
 
     }
