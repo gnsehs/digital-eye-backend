@@ -4,6 +4,7 @@ import com.deepl.api.DeepLException;
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
 import hello.degitaleye.dto.AiFormDataResponseDto;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,12 +24,21 @@ public class ProxyServerService {
 
     @Value("${flask.base.url}")
     private String flaskBaseUrl;
+    //temp
+    private final String testFlaskUrl = "/test_rest_template_get";
+    // flask url
+    private String flaskUrl;
+
+
 
     private final Translator translator;
     private final RestClient restClient;
 
-    //temp
-    private final String testFlaskUrl = "/test_rest_template_get";
+
+    @PostConstruct
+    private void urlInit() {
+        flaskUrl = flaskBaseUrl + testFlaskUrl;
+    }
 
     public String getAiImageDataResponse(MultipartFile file) {
 
@@ -40,7 +50,7 @@ public class ProxyServerService {
         }
 
         return restClient.post()
-                .uri(flaskBaseUrl + testFlaskUrl)
+                .uri(flaskUrl)
                 .body(body)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .retrieve()
@@ -71,7 +81,7 @@ public class ProxyServerService {
         }
 
          return restClient.post()
-                .uri(flaskBaseUrl + testFlaskUrl)
+                .uri(flaskUrl)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()

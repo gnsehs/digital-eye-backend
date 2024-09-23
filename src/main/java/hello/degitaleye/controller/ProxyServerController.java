@@ -3,6 +3,9 @@ package hello.degitaleye.controller;
 import com.deepl.api.DeepLException;
 import hello.degitaleye.dto.AiFormDataResponseDto;
 import hello.degitaleye.service.ProxyServerService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -40,7 +43,7 @@ public class ProxyServerController {
      * @return TODO client return 생각하기, @ExceptionHandler 작성하기
      */
     @PostMapping(value = "/ai-form", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AiFormDataResponseDto> aiForm(@RequestPart(value = "text") String text,
+    public ResponseEntity<AiFormDataResponseDto> aiForm(@Parameter() @RequestPart(value = "text") String text,
                                          @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
         AiFormDataResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
