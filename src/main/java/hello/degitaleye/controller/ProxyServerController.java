@@ -4,8 +4,6 @@ import com.deepl.api.DeepLException;
 import hello.degitaleye.dto.AiFormDataResponseDto;
 import hello.degitaleye.service.ProxyServerService;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

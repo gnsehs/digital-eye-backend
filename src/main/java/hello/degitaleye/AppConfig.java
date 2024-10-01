@@ -13,13 +13,6 @@ public class AppConfig {
     @Value("${deepL-admin-key}")
     private String deeplKey;
 
-    @Bean
-    public RestTemplate getRestTemplate() {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(3000);
-        factory.setReadTimeout(3000);
-        return new RestTemplate(factory);
-    }
 
     @Bean
     public Translator getTranslator() {
