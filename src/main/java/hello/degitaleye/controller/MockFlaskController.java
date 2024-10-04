@@ -1,6 +1,7 @@
 package hello.degitaleye.controller;
 
 import hello.degitaleye.dto.AiFormDataResponseDto;
+import hello.degitaleye.temp.TestDto;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,12 @@ public class MockFlaskController {
             return Json.pretty(new AiFormDataResponseDto(dialogueT, file.getOriginalFilename()));
         }
 
+    }
+
+    @PostMapping(value = "/test_image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String testImage(@RequestPart(value = "image") MultipartFile file) {
+        saveFile(file);
+            return Json.pretty(new TestDto("Hello"));
     }
 
     /**

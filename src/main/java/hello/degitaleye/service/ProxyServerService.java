@@ -41,7 +41,7 @@ public class ProxyServerService {
         flaskUrl = flaskBaseUrl;
     }
 
-    public String getAiImageDataResponse(MultipartFile file) {
+    public AiResponseDto getAiImageDataResponse(MultipartFile file) {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
@@ -55,7 +55,7 @@ public class ProxyServerService {
                 .body(body)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .retrieve()
-                .body(String.class);
+                .body(AiResponseDto.class);
 
     }
     /*

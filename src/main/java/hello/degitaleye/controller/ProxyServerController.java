@@ -27,11 +27,11 @@ public class ProxyServerController {
      * @return
      */
     @PostMapping(value = "/ai-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> aiImage(
+    public ResponseEntity<AiResponseDto> aiImage(
             @RequestPart(value = "image") MultipartFile file) {
 
-        String aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
-        log.info("test KK {}",aiImageDataResponse);
+        AiResponseDto aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
+        log.info("test KK {}",aiImageDataResponse.getMessage());
         return ResponseEntity.ok().body(aiImageDataResponse);
 
     }
