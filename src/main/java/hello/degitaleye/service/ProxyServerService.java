@@ -4,6 +4,7 @@ import com.deepl.api.DeepLException;
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
 import hello.degitaleye.dto.AiFormDataResponseDto;
+import hello.degitaleye.dto.AiResponseDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class ProxyServerService {
 
     @PostConstruct
     private void urlInit() {
-        flaskUrl = flaskBaseUrl + testFlaskUrl;
+        flaskUrl = flaskBaseUrl;
     }
 
     public String getAiImageDataResponse(MultipartFile file) {
@@ -50,16 +51,19 @@ public class ProxyServerService {
         }
 
         return restClient.post()
-                .uri(flaskUrl)
+                .uri(flaskUrl + "send_per_check")
                 .body(body)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .retrieve()
                 .body(String.class);
 
     }
+    /*
+    send_per_check
+     */
 
 
-    public AiFormDataResponseDto  getAiFormDataResponse(String text, MultipartFile file) throws DeepLException, InterruptedException {
+    public AiResponseDto getAiFormDataResponse(String text, MultipartFile file) throws DeepLException, InterruptedException {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         log.info("===test1 V2 dialogue = {}===", text);
@@ -81,11 +85,11 @@ public class ProxyServerService {
         }
 
          return restClient.post()
-                .uri(flaskUrl)
+                .uri(flaskUrl + "send_check")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                .body(AiFormDataResponseDto.class); // 이때 response가 json임이 명시 되어야 함
+                 .body(AiResponseDto.class); // 이때 response가 json임이 명시 되어야 함
 
     }
 

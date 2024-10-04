@@ -2,6 +2,7 @@ package hello.degitaleye.controller;
 
 import com.deepl.api.DeepLException;
 import hello.degitaleye.dto.AiFormDataResponseDto;
+import hello.degitaleye.dto.AiResponseDto;
 import hello.degitaleye.service.ProxyServerService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ProxyServerController {
             @RequestPart(value = "image") MultipartFile file) {
 
         String aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
+        log.info("test KK {}",aiImageDataResponse);
         return ResponseEntity.ok().body(aiImageDataResponse);
 
     }
@@ -40,11 +42,11 @@ public class ProxyServerController {
      * @param file AI 처리할 이미지
      * @return TODO client return 생각하기, @ExceptionHandler 작성하기
      */
-    @PostMapping(value = "/ai-form", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AiFormDataResponseDto> aiForm(@Parameter() @RequestPart(value = "text") String text,
-                                         @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
+    @PostMapping(value = "/ai-form", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AiResponseDto> aiForm( @RequestPart(value = "text") String text,
+                                                @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        AiFormDataResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
+        AiResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
         return ResponseEntity.ok().body(aiFormDataResponse);
 
     }
