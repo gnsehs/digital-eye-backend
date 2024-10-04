@@ -3,14 +3,12 @@ package hello.degitaleye.service;
 import com.deepl.api.DeepLException;
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
-import hello.degitaleye.dto.AiFormDataResponseDto;
 import hello.degitaleye.dto.AiResponseDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -46,7 +44,7 @@ public class ProxyServerService {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         if (file != null) {
-            log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
+            log.info("===getAiImageDataResponse filename = {}===", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
 
@@ -59,19 +57,20 @@ public class ProxyServerService {
 
     }
     /*
-    send_per_check
+    send_per_check: only image
+    send_check: image + text
      */
 
 
     public AiResponseDto getAiFormDataResponse(String text, MultipartFile file) throws DeepLException, InterruptedException {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        log.info("===test1 V2 dialogue = {}===", text);
+        log.info("===getAiFormDataResponse dialogue = {}===", text);
 
         try { // 번역처리
             TextResult textResult = translator.translateText(text, "KO", "en-US");
             body.add("text", textResult.getText());
-            log.info("===test1 V2 dialogueT = {}===", textResult.getText());
+            log.info("===getAiFormDataResponse dialogueT = {}===", textResult.getText());
         } catch (DeepLException e) {
             log.error("DeepL 번역 오류", e);
             throw e;
@@ -80,7 +79,7 @@ public class ProxyServerService {
         }
 
         if (file != null) {
-            log.info("===test1 V2 filename = {}===", file.getOriginalFilename());
+            log.info("===getAiFormDataResponse filename = {}===", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
 
