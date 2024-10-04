@@ -1,7 +1,6 @@
-package hello.degitaleye.controller;
+package hello.degitaleye.temp;
 
 import hello.degitaleye.dto.AiFormDataResponseDto;
-import hello.degitaleye.temp.TestDto;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
