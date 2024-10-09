@@ -1,4 +1,4 @@
-package hello.degitaleye.dto;
+package hello.degitaleye.temp;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
