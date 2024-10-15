@@ -1,5 +1,6 @@
 package hello.degitaleye.temp;
 
+import hello.degitaleye.dto.AiResponseDto;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-
+// TODO /send_check mock 만들기
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -28,16 +29,16 @@ public class MockFlaskController {
      * @param file
      * @return
      */
-    @PostMapping(value = "/test_rest_template_get", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/send_per_check", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String tempAiServer(@RequestPart(value = "text", required = false) String dialogueT,
                                @RequestPart(value = "image") MultipartFile file) {
         log.info("===test2 dialouge_T = {}===", dialogueT);
         saveFile(file);
 
         if (dialogueT == null) {
-            return "image test is good";
+            return Json.pretty(new AiResponseDto("image test is good"));
         } else {
-            return Json.pretty(new AiFormDataResponseDto(dialogueT, file.getOriginalFilename()));
+            return Json.pretty(new AiResponseDto(dialogueT));
         }
 
     }
