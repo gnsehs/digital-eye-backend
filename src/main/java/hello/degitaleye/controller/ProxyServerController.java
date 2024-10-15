@@ -5,12 +5,15 @@ import hello.degitaleye.dto.AiResponseDto;
 import hello.degitaleye.service.ProxyServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,9 +29,10 @@ public class ProxyServerController {
      */
     @PostMapping(value = "/ai-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AiResponseDto> aiImage(
-            @RequestPart(value = "image") MultipartFile file) {
+            @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        AiResponseDto aiImageDataResponse = proxyServerService.getAiImageDataResponse(file);
+
+        AiResponseDto aiImageDataResponse = proxyServerService.getAiImageDataResponse(file, getContextLocale());
         log.info("test KK {}",aiImageDataResponse.getMessage());
         return ResponseEntity.ok().body(aiImageDataResponse);
 
@@ -38,13 +42,13 @@ public class ProxyServerController {
      *
      * @param text 사용자 요청 문장
      * @param file AI 처리할 이미지
-     * @return TODO client return 생각하기, @ExceptionHandler 작성하기
+     * @return
      */
     @PostMapping(value = "/ai-form", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AiResponseDto> aiForm( @RequestPart(value = "text") String text,
                                                 @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        AiResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file);
+        AiResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file, getContextLocale());
         return ResponseEntity.ok().body(aiFormDataResponse);
 
     }
@@ -53,7 +57,9 @@ public class ProxyServerController {
 
 
 
-
+    private Locale getContextLocale() {
+        return LocaleContextHolder.getLocale();
+    }
 
 }
 

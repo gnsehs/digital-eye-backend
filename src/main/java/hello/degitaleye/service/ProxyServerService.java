@@ -15,6 +15,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,7 +31,6 @@ public class ProxyServerService {
     private String flaskUrl;
 
 
-
     private final Translator translator;
     private final RestClient restClient;
 
@@ -39,7 +40,7 @@ public class ProxyServerService {
         flaskUrl = flaskBaseUrl;
     }
 
-    public AiResponseDto getAiImageDataResponse(MultipartFile file) {
+    public AiResponseDto getAiImageDataResponse(MultipartFile file, Locale locale) throws DeepLException, InterruptedException {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
@@ -48,12 +49,19 @@ public class ProxyServerService {
             body.add("image", file.getResource());
         }
 
-        return restClient.post()
+        AiResponseDto responseDto = restClient.post()
                 .uri(flaskUrl + "send_per_check")
                 .body(body)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .retrieve()
                 .body(AiResponseDto.class);
+        assert responseDto != null : "responseDto is Null";
+        String translatedResponse = translator.translateText(responseDto.getMessage(), "EN", locale.getLanguage()).getText();
+        responseDto.setMessage(translatedResponse);
+
+        return responseDto;
+
+
 
     }
     /*
@@ -62,7 +70,7 @@ public class ProxyServerService {
      */
 
 
-    public AiResponseDto getAiFormDataResponse(String text, MultipartFile file) throws DeepLException, InterruptedException {
+    public AiResponseDto getAiFormDataResponse(String text, MultipartFile file, Locale locale) throws DeepLException, InterruptedException {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         log.info("===getAiFormDataResponse dialogue = {}===", text);
@@ -82,13 +90,13 @@ public class ProxyServerService {
             log.info("===getAiFormDataResponse filename = {}===", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
-
-         return restClient.post()
+// TODO Locale 에 따라 return 하는 것으로 수정하기
+        return restClient.post()
                 .uri(flaskUrl + "send_check")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                 .body(AiResponseDto.class); // 이때 response가 json임이 명시 되어야 함
+                .body(AiResponseDto.class); // 이때 response가 json임이 명시 되어야 함
 
     }
 
