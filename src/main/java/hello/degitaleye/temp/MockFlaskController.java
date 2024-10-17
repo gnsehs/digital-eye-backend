@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+
 // TODO /send_check mock 만들기
 @RestController
 @RequiredArgsConstructor
@@ -21,46 +22,47 @@ public class MockFlaskController {
     @Value("${file.dir}")
     private String fileDir; // 파일 저장
 
-
+   /*
+    send_per_check: only image
+    send_check: image + text
+     */
 
     /**
      * 테스트용 플라스크 서버 역할 -> 나중에 삭제
-     * @param dialogueT
-     * @param file
-     * @return
      */
     @PostMapping(value = "/send_per_check", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String tempAiServer(@RequestPart(value = "text", required = false) String dialogueT,
-                               @RequestPart(value = "image") MultipartFile file) {
-        log.info("===test2 dialouge_T = {}===", dialogueT);
+    public String temp_send_per_check(@RequestPart(value = "image") MultipartFile file) {
+        log.info("temp_send_per_check:: image_name = {}, image_size = {} ", file.getOriginalFilename(), file.getSize() / 1024);
         saveFile(file);
 
-        if (dialogueT == null) {
-            return Json.pretty(new AiResponseDto("image test is good"));
-        } else {
-            return Json.pretty(new AiResponseDto(dialogueT));
-        }
+        return Json.pretty(new AiResponseDto("image test is good"));
 
     }
 
-    @PostMapping(value = "/test_image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String testImage(@RequestPart(value = "image") MultipartFile file) {
+    @PostMapping(value = "/send_check", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String temp_send_check(@RequestPart(value = "image") MultipartFile file,
+                                  @RequestPart(value = "text") String text) {
+
+        log.info("temp_send_check:: image_name = {}, image_size = {}KB, text = {}", file.getOriginalFilename(), file.getSize() / 1024, text);
         saveFile(file);
-            return Json.pretty(new TestDto("Hello"));
+
+        return Json.pretty(new AiResponseDto(text));
     }
+
 
     /**
      * 파일 저장 메서드
+     *
      * @param file
      */
     private void saveFile(MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             String fullPath = fileDir + file.getOriginalFilename();
-            log.info("===test2 파일 저장 = {}===", fullPath);
+            log.info("temp 파일 저장 = {}", fullPath);
             try {
                 file.transferTo(new File(fullPath));
             } catch (IOException e) {
-                log.error("test2 파일 저장 실패 ", e);
+                log.error("temp 파일 저장 실패 ", e);
             }
         }
     }
