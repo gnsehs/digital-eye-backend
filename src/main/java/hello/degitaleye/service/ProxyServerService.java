@@ -53,7 +53,13 @@ public class ProxyServerService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .retrieve()
                 .body(AiResponseDto.class);
+
         assert responseDto != null : "responseDto is Null";
+
+        if (locale.equals(Locale.ENGLISH)) { // 번역 처리 x
+            return responseDto;
+        }
+
         String translatedResponse = translator.translateText(responseDto.getMessage(), "EN", locale.getLanguage()).getText();
         responseDto.setMessage(translatedResponse);
 
@@ -88,13 +94,24 @@ public class ProxyServerService {
             log.info("getAiFormDataResponse filename = {}", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
-// TODO Locale 에 따라 return 하는 것으로 수정하기
-        return restClient.post()
+        AiResponseDto responseDto = restClient.post()
                 .uri(flaskUrl + "send_check")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                .body(AiResponseDto.class); // 이때 response가 json임이 명시 되어야 함
+                .body(AiResponseDto.class);// 이때 response가 json임이 명시 되어야 함
+
+        assert responseDto != null : "responseDto is Null";
+
+        if (locale.equals(Locale.ENGLISH)) { // Accept-Language = en 일 경우 return
+            return responseDto;
+        }
+
+        String translatedResponse = translator.translateText(responseDto.getMessage(), "EN", locale.getLanguage()).getText();
+        responseDto.setMessage(translatedResponse);
+
+        return responseDto;
+
 
     }
 
