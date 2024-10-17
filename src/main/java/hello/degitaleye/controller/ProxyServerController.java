@@ -31,8 +31,8 @@ public class ProxyServerController {
     public ResponseEntity<AiResponseDto> aiImage(
             @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        log.info("===/ai-image received: image_name = {}, image_size = {}", file.getOriginalFilename(), file.getSize() / 1024);
-
+        log.info("===/ai-image received: image_name = {}, image_size = {}, locale = {}",
+                file.getOriginalFilename(), file.getSize() / 1024, getContextLocale());
         AiResponseDto aiImageDataResponse = proxyServerService.getAiImageDataResponse(file, getContextLocale());
         log.info("===/ai-image return: msg = {}",aiImageDataResponse.getMessage());
         return ResponseEntity.ok().body(aiImageDataResponse);
@@ -49,8 +49,11 @@ public class ProxyServerController {
     public ResponseEntity<AiResponseDto> aiForm( @RequestPart(value = "text") String text,
                                                 @RequestPart(value = "image") MultipartFile file) throws DeepLException, InterruptedException {
 
-        log.info("===/ai-form received: image_name = {}, image_size = {}KB, text = {}", file.getOriginalFilename(), file.getSize() / 1024, text);
+        log.info("===/ai-form received: image_name = {}, image_size = {}KB, text = {}, locale = {}",
+                file.getOriginalFilename(), file.getSize() / 1024, text,getContextLocale());
+
         AiResponseDto aiFormDataResponse = proxyServerService.getAiFormDataResponse(text, file, getContextLocale());
+
         log.info("===/ai-form return: msg = {}",aiFormDataResponse.getMessage());
         return ResponseEntity.ok().body(aiFormDataResponse);
 
