@@ -25,8 +25,6 @@ public class ProxyServerService {
 
     @Value("${flask.base.url}")
     private String flaskBaseUrl;
-    //temp
-    private final String testFlaskUrl = "/test_rest_template_get";
     // flask url
     private String flaskUrl;
 
@@ -45,7 +43,7 @@ public class ProxyServerService {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         if (file != null) {
-            log.info("===getAiImageDataResponse filename = {}===", file.getOriginalFilename());
+            log.info("getAiImageDataResponse filename = {}", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
 
@@ -73,12 +71,12 @@ public class ProxyServerService {
     public AiResponseDto getAiFormDataResponse(String text, MultipartFile file, Locale locale) throws DeepLException, InterruptedException {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        log.info("===getAiFormDataResponse dialogue = {}===", text);
+        log.info("getAiFormDataResponse dialogue = {}", text);
 
         try { // 번역처리
             TextResult textResult = translator.translateText(text, "KO", "en-US");
             body.add("text", textResult.getText());
-            log.info("===getAiFormDataResponse dialogueT = {}===", textResult.getText());
+            log.info("getAiFormDataResponse dialogueT = {}", textResult.getText());
         } catch (DeepLException e) {
             log.error("DeepL 번역 오류", e);
             throw e;
@@ -87,7 +85,7 @@ public class ProxyServerService {
         }
 
         if (file != null) {
-            log.info("===getAiFormDataResponse filename = {}===", file.getOriginalFilename());
+            log.info("getAiFormDataResponse filename = {}", file.getOriginalFilename());
             body.add("image", file.getResource());
         }
 // TODO Locale 에 따라 return 하는 것으로 수정하기
