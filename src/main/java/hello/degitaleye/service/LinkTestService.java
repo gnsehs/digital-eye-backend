@@ -36,7 +36,6 @@ public class LinkTestService {
                 .body(ApiResponseDto.class);
 
 
-        assert dto != null;
         System.out.println(("dto = " + (dto.getResponse().getBody().getItemsResponse().getItems()).get(5)));
 
         return new LinkResponseDto(LocalDateTime.now(),
@@ -59,7 +58,7 @@ public class LinkTestService {
                 .queryParam("pageNo", "1")
                 .queryParam("numOfRows", "12")
                 .queryParam("dataType", "JSON")
-                .queryParam("base_date", getCurrentDate())
+                .queryParam("base_date", "0500")
                 .queryParam("base_time", getCurrentHour())
                 .queryParam("nx", "55")
                 .queryParam("ny", "127")
