@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +24,10 @@ public class LinkTestController {
     public ResponseEntity<LinkResponseDto> initTest() throws UnsupportedEncodingException {
         LinkResponseDto weather = linkTestService.getWeather();
         return ResponseEntity.ok().body(weather);
+    }
+
+    @GetMapping(value = "/test")
+    public String test() {
+        return "is ok?";
     }
 }
