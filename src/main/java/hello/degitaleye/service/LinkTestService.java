@@ -36,6 +36,7 @@ public class LinkTestService {
                 .body(ApiResponseDto.class);
 
 
+        assert dto != null;
         System.out.println(("dto = " + (dto.getResponse().getBody().getItemsResponse().getItems()).get(5)));
 
         return new LinkResponseDto(LocalDateTime.now(),
@@ -59,7 +60,7 @@ public class LinkTestService {
                 .queryParam("numOfRows", "12")
                 .queryParam("dataType", "JSON")
                 .queryParam("base_date", getCurrentDate())
-                .queryParam("base_time", "0500")
+                .queryParam("base_time", getCurrentHour())
                 .queryParam("nx", "55")
                 .queryParam("ny", "127")
                 .build(true)
@@ -69,11 +70,12 @@ public class LinkTestService {
     }
 
     private String getCurrentHour() {
-        return LocalDateTime.now().minusMinutes(30).format(DateTimeFormatter.ofPattern("HHmm"));
+//        return LocalDateTime.now().minusHours(1L).format(DateTimeFormatter.ofPattern("HHmm"));
+        return "0500"; // 05시 기준 날씨
     }
 
     private String getCurrentDate() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return LocalDateTime.now().minusDays(1L).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
 }
