@@ -36,11 +36,16 @@ public class LinkTestService {
                 .body(ApiResponseDto.class);
 
 
-        System.out.println(("dto = " + (dto.getResponse().getBody().getItemsResponse().getItems()).get(5)));
+        if (dto != null && dto.getResponse().getBody() != null) { // 날씨 정보 받아왔다면
+            System.out.println(("dto = " + (dto.getResponse().getBody().getItemsResponse().getItems()).get(5)));
+            return new LinkResponseDto(LocalDateTime.now(),
+                    "Digital Eye 가 사용가능 합니다.",
+                    dto.getResponse().getBody().getItemsResponse());
+        }
 
-        return new LinkResponseDto(LocalDateTime.now(),
-                "Digital Eye 가 사용가능 합니다.",
-                dto.getResponse().getBody().getItemsResponse());
+        return new LinkResponseDto(LocalDateTime.now(), "Digital Eye 가 사용가능 합니다.", null);
+
+
 
 
 
@@ -59,7 +64,7 @@ public class LinkTestService {
                 .queryParam("numOfRows", "12")
                 .queryParam("dataType", "JSON")
                 .queryParam("base_date", getCurrentDate())
-                .queryParam("base_time", "0500")
+                .queryParam("base_time", getCurrentHour())
                 .queryParam("nx", "55")
                 .queryParam("ny", "127")
                 .build(true)
