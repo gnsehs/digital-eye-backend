@@ -64,7 +64,7 @@ public class LinkTestService {
                 .queryParam("numOfRows", "12")
                 .queryParam("dataType", "JSON")
                 .queryParam("base_date", getCurrentDate())
-                .queryParam("base_time", getCurrentHour())
+                .queryParam("base_time", "1700")
                 .queryParam("nx", "55")
                 .queryParam("ny", "127")
                 .build(true)
@@ -74,8 +74,8 @@ public class LinkTestService {
     }
 
     private String getCurrentHour() {
-//        return LocalDateTime.now().minusHours(1L).format(DateTimeFormatter.ofPattern("HHmm"));
-        return "0500"; // 05시 기준 날씨
+        return LocalDateTime.now().minusHours(1L).format(DateTimeFormatter.ofPattern("HHmm"));
+
     }
 
     private String getCurrentDate() {
