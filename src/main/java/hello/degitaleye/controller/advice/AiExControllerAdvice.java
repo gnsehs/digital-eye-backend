@@ -33,7 +33,7 @@ public class AiExControllerAdvice {
     }
 
     @ExceptionHandler(MissingServletRequestPartException.class)
-    public ResponseEntity<ErrorResult> missingRequestValueExHandle(MissingServletRequestPartException e) {
+    public ResponseEntity<ErrorResult> notSupportedExceptionHandle(MissingServletRequestPartException e) {
         log.error("[exception-handle] ex", e);
         return ResponseEntity
                 .badRequest()
@@ -41,6 +41,19 @@ public class AiExControllerAdvice {
                         ms.getMessage("error.400", null, getContextLocale()),
                         ms.getMessage("solution.translate", null, getContextLocale())));
     }
+
+
+//    @Override
+//    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//        log.error("[exception-handle] ex", ex);
+//        return ResponseEntity
+//                .badRequest()
+//                .body(new ErrorResult(HttpStatus.METHOD_NOT_ALLOWED.value()
+//                        , "잘못된 메소드 입니다."
+//                        , "다시 시도해 주세요"));
+//
+//    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResult> exHandle(Exception e) {
