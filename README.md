@@ -32,3 +32,21 @@
 
 # 🔨 Digital Eye System architecture
 ![슬라이드6](https://github.com/user-attachments/assets/ae50c11f-81f6-45d0-bb68-ee38c3766556)
+
+# Getting Started
+
+## Add Properties Files
+- `touch ./src/main/resources/application-API-KEY.properties`
+
+  ``` 
+  deepL-admin-key=DeepL Api Key
+  weather-key=골공데이터포털 Api Key
+  ```
+- `touch ./src/main/resources/application-uri.properties`
+
+  ```
+  flask.base.url=AI Serving Server BaseUrl
+  ```
+## Build & Run DockerFile
+- `docker build -t digitaleye:tag .`
+- `docker run -it -p 8080:8080 digitaleye`
