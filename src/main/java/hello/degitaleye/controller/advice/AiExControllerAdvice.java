@@ -43,16 +43,7 @@ public class AiExControllerAdvice {
     }
 
 
-//    @Override
-//    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-//        log.error("[exception-handle] ex", ex);
-//        return ResponseEntity
-//                .badRequest()
-//                .body(new ErrorResult(HttpStatus.METHOD_NOT_ALLOWED.value()
-//                        , "잘못된 메소드 입니다."
-//                        , "다시 시도해 주세요"));
-//
-//    }
+
 
 
     @ExceptionHandler(Exception.class)
