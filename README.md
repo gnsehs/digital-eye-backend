@@ -35,6 +35,12 @@
 
 # Getting Started
 
+## Github Secret
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- EXTERNAL_KEY: `application-API-KEY.properties` 
+- EXTERNAL_KEL: `application-uri.properties` 
+
 ## Add Properties Files
 - `touch ./src/main/resources/application-API-KEY.properties`
 
